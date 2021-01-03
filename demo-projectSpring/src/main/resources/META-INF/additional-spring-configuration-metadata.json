@@ -1,0 +1,8 @@
+{
+  "properties": [
+    {
+      "name": "spring.CLASSPATH_RESOURCE_LOCATIONS",
+      "type": "java.lang.String",
+      "description": "Description for spring.CLASSPATH_RESOURCE_LOCATIONS."
+  }
+] }
