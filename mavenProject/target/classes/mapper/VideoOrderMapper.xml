@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--
+ namespace: 名称空间， 一般需要保持全局唯一，最好和dao层的java接口一致
+ 可以映射sql语句 到对应的方法名称和参数，返回类型
+ mybatis 是使用接口动态代理
+
+-->
+
+
+<mapper namespace="net.xdclass.xd_class.dao.VideoOrderMapper">
+
+
+    <!--
+    statement sql 语句
+    id 当前mappper下需要唯一
+    resultType  sql查询结果集的封装
+    -->
+
+    <!-- type 为我们实体类绝对位置 -->
+    <resultMap id="ResultVideoOrderMap" type="VideoOrder">
+
+        <!-- id 为我们的唯一主键  -->
+        <id column="id" property="id"/>
+
+        <result column="user_id" property="userId"/>
+        <result column="out_trade_no" property="outTradeNo"/>
+
+        <association property="user" javaType="User">
+            <id column="" property="id"/>
+            <result column="name" property="name"/>
+        </association>
+    </resultMap>
+
+    <!--resultMap = "上面的resultMap中的id"-->
+    <select id="queryVideoOrderList" resultMap="ResultVideoOrderMap">
+        select
+        o.id,
+        o.user_id,
+        o.out_trade_no,
+        u.id,
+        u.name
+        from video_order o left join user u on o.user_id = u.id;
+
+    </select>
+
+
+    <resultMap id="queryUserListResultMap" type="User">
+        <id column="" property="id"/>
+        <result column="name" property="name"/>
+
+        <!-- 这个 property 所赋值的 必须是User 中所包含的一个字段-->
+        <!--
+        这里是一对多关系 不可以用javaType 需要用ofType
+        ofType 为链表或者其他数据结构中的泛型
+         -->
+        <collection property="list" ofType="VideoOrder">
+            <id column="id" property="id"/>
+
+            <result column="user_id" property="userId"/>
+            <result column="out_trade_no" property="outTradeNo"/>
+        </collection>
+
+    </resultMap>
+
+    <select id="queryUserList" resultMap="queryUserListResultMap">
+        select
+        u.id,
+        u.name,
+        o.id,
+        o.user_id,
+        o.out_trade_no
+        from  user u left join video_order o on u.id = o.user_id;
+    </select>
+    
+</mapper>

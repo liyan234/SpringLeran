@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--
+ namespace: 名称空间， 一般需要保持全局唯一，最好和dao层的java接口一致
+ 可以映射sql语句 到对应的方法名称和参数，返回类型
+ mybatis 是使用接口动态代理
+
+-->
+<mapper namespace="net.xdclass.xd_class.dao.VideoMapper">
+
+
+    <!--
+    statement sql 语句
+    id 当前mappper下需要唯一
+    resultType  sql查询结果集的封装
+    -->
+    <select id="selectById" resultType="net.xdclass.xd_class.domain.Video">
+             select * from video where id = #{video_id}
+    </select>
+
+    <select id="selectAllVideo" resultType="net.xdclass.xd_class.domain.Video">
+            select * from video
+    </select>
+
+    <select id="selectByPointAndTitleLike" resultType="net.xdclass.xd_class.domain.Video">
+            select * from video where point=#{point} and title like concat('%', #{title}, '%')
+    </select>
+
+    <insert id="add" parameterType="net.xdclass.xd_class.domain.Video" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        INSERT INTO `video` ( `title`, `summary`, `cover_img`, `price`,
+        `create_time`, `point`)
+        VALUES
+        (#{title,jdbcType=VARCHAR},#{summary,jdbcType=VARCHAR},
+        #{coverImg,jdbcType=VARCHAR},#{price,jdbcType=INTEGER},
+        #{createTime,jdbcType=TIMESTAMP},#{point,jdbcType=DOUBLE})
+     </insert>
+
+    <!-- 其中java类中字段的引用 需要加上item所配置的的类型（也就是list的中的泛型） -->
+    <!-- 而 separator 其实就是每一次循环执行完的分隔符-->
+    <insert id="addBatch" parameterType="net.xdclass.xd_class.domain.Video" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+          INSERT INTO video (title, summary)
+          values
+          <foreach collection="list" item="video" separator=",">
+          (#{video.title, jdbcType=VARCHAR}, #{video.summary, jdbcType=VARCHAR})
+          </foreach>
+    </insert>
+
+    <update id="updateVideoSelect" parameterType="net.xdclass.xd_class.domain.Video">
+        update video
+        <trim prefix="set" suffixOverrides=",">
+            <if test="title != null"> title = #{title, jdbcType=VARCHAR},</if>
+            <if test="summary != null"> summary = #{summary, jdbcType=VARCHAR},</if>
+            <if test="coverImg != null"> cover_img = #{coverImg, jdbcType=VARCHAR},</if>
+            <if test="price != null"> price = #{price, jdbcType=INTEGER},</if>
+            <if test="createTime != null"> create_time = #{createTime, jdbcType=VARCHAR},</if>
+            <if test="point != 0"> point = #{point, jdbcType=DOUBLE},</if>
+        </trim>
+        where id = #{id, jdbcType=INTEGER}
+    </update>
+
+    <delete id="deleteVideo" parameterType="net.xdclass.xd_class.domain.Video">
+        delete from video
+        where price <![CDATA[ <= ]]> 30
+    </delete>
+</mapper>
