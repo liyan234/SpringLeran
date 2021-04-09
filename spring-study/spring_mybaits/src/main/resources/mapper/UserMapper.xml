@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--
+ namespace: 名称空间， 一般需要保持全局唯一，和dao层的java接口一致
+ 可以映射sql语句 到对应的方法名称和参数，返回类型
+ mybatis 是使用接口动态代理
+-->
+<mapper namespace="com.li.pojo.UserMapper" >
+    <!--
+    statement sql 语句
+    id 当前mappper下需要唯一
+    resultType  sql查询结果集的封装
+    -->
+    <select id="selectUser" resultType="com.li.pojo.User">
+             select * from user;
+    </select>
+
+</mapper>

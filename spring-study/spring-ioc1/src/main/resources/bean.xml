@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- services -->
+
+    <!-- 使用默认的构造构造方法的时候 不需要配置constructor-arg
+         如果类中定义了构造方法就需要去 配置构造方法 要木会报错
+         spring创建对象的时候默认执行了new方法 根据是否有 无参的构造方法来构建对象
+    的时候忘里面可以这样赋值 -->
+    <bean id="hello" class="com.li.pojo.Hello">
+        <property name="name" value="spring"></property>
+    </bean>
+
+
+    <!--构造方法 有参 需要通过配置 constructor-arg
+      当spring构建对象的时候就可以获取对象
+     -->
+    <bean id="hello2" class="com.li.pojo.Hello2">
+        <constructor-arg name="name" value="sping2"/>
+        <!-- property 相当于set方法 -->
+        <property name="name" value="spring3"></property>
+    </bean>
+    <!-- more bean definitions for services go here -->
+
+</beans>
